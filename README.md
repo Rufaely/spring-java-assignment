@@ -3,9 +3,10 @@
 ## Welcome ##
 This readme file contains the coding assignment in detail. 
 Please keep code clean with good documentation which will be evaluated as part of your assignment.
+All code should be reactive.
 
 ## Project Structure ##
-Create a simple Gradle Java (1.8) project using Spring Webflux, rxjava-jdbc and H2 database.
+Create a simple Gradle Java (1.8) project using Spring Webflux and H2 database.
 
 In the assignment we will define two entities:
 
@@ -15,8 +16,8 @@ In the assignment we will define two entities:
 ## Assignment Number 1 ##
 
 * Create Schema for Department and Student for H2 Database
-* Create Models and Repository classes for Employee - Create, Get Employee, Get All Employees and Delete Employee using Webflux and rxjava-jdbc
-* Create Model and Repository class for Department - Get all Departments using Webflux and rxjava-jdbc
+* Create Models and Repository classes for Employee - Create, Get Employee, Get All Employees and Delete Employee using Webflux
+* Create Model and Repository class for Department - Get all Departments using Webflux 
 * Write Junit Test classes with 98% code coverage
 * Add JavaDoc and create Readme
 
