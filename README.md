@@ -11,11 +11,11 @@ Create a simple Gradle Java (1.8) project using Spring Webflux and H2 database.
 In the assignment we will define two entities:
 
 * The Department Entity - POJO with the Department information.
-* The Student Entity - student information with Department connection.
+* The Employee Entity - student information with Department connection.
 
 ## Assignment Number 1 ##
 
-* Create Schema for Department and Student for H2 Database
+* Create Schema for Department and Employee for H2 Database
 * Create Models and Repository classes for Employee - Create, Get Employee, Get All Employees and Delete Employee using Webflux
 * Create Model and Repository class for Department - Get all Departments using Webflux 
 * Write Junit Test classes with 98% code coverage
