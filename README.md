@@ -34,6 +34,7 @@ In the assignment we will define two entities:
 * Create Department Router using Department Handler from Assignment 2 - Get all Departments using Webflux
 * Write Junit Test classes with 98% code coverage
 * Add JavaDoc and create Readme
+* Create Postman Collection
 
 ## Assignment Number 4 ##
 
