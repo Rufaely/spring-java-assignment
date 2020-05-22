@@ -22,21 +22,32 @@ public class EmployeeRepo {
                 .stream()
                 .forEach((firstName) -> {
                             long id = ID_COUNTER++;
-
+                            String lastName = "Yohannes";
                             DATA.put(id, new Employee(id, firstName));
                         }
                 );
     }
 
 
+    /**
+     * @return Flux<Employee>
+     */
     public Flux<Employee> findAll() {
         return Flux.fromIterable(DATA.values());
     }
 
+    /**
+     * @param id
+     * @return Mono<Employee>
+     */
     public Mono<Employee> findById(Long id) {
         return Mono.just(DATA.get(id));
     }
 
+    /**
+     * @param emp
+     * @return Mono<Employee>
+     */
     public Mono<Employee> createPost(Employee emp) {
         long id = ID_COUNTER++;
         Employee employee = new Employee();
@@ -45,4 +56,5 @@ public class EmployeeRepo {
         DATA.put(id, employee);
         return Mono.just(employee);
     }
+
 }

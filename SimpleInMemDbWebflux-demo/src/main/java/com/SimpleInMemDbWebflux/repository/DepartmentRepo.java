@@ -1,13 +1,12 @@
 package com.SimpleInMemDbWebflux.repository;
 
 import com.SimpleInMemDbWebflux.model.Department;
+import com.SimpleInMemDbWebflux.model.Employee;
 import org.springframework.stereotype.Component;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
-import java.util.Arrays;
-import java.util.HashMap;
-import java.util.Map;
+import java.util.*;
 
 @Component
 public class DepartmentRepo {
@@ -19,16 +18,30 @@ public class DepartmentRepo {
                 .stream()
                 .forEach( name -> {
                     long id = ID_COUNTER++;
-                    DATA.put(id, new Department(id, name));
+                    List<Employee> emp = new ArrayList<Employee>();
+                    DATA.put(id, new Department(id, name, emp));
                 });
     }
+
+    /**
+     * @return Flux<Department>
+     */
     public Flux<Department> findAll() {
         return Flux.fromIterable(DATA.values());
     }
 
+    /**
+     * @param id
+     * @return Mono<Department>
+     */
     public Mono<Department> findById(Long id){
         return Mono.just(DATA.get(id));
     }
+
+    /**
+     * @param dep
+     * @return Mono<Department>
+     */
     public Mono<Department> createPost(Department dep) {
         long id = ID_COUNTER++;
         dep.setId(id);
