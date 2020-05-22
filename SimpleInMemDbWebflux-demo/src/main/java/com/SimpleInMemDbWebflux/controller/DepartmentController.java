@@ -1,7 +1,7 @@
 package com.SimpleInMemDbWebflux.controller;
 
 import com.SimpleInMemDbWebflux.model.Department;
-import com.SimpleInMemDbWebflux.repository.DepartmentRepo;
+import com.SimpleInMemDbWebflux.repository.Impl.DepartmentRepoImpl;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 import reactor.core.publisher.Flux;
@@ -15,13 +15,21 @@ import reactor.core.publisher.Mono;
 @RequestMapping(value = "/Department")
 public class DepartmentController {
 
-    private final DepartmentRepo departmentRepo;
+    private final DepartmentRepoImpl departmentRepo;
 
     /**
      * @param departmentRepo
      */
-    public DepartmentController(DepartmentRepo departmentRepo) {
+    public DepartmentController(DepartmentRepoImpl departmentRepo) {
         this.departmentRepo = departmentRepo;
+    }
+
+    /**
+     * @return Flux<Department>
+     */
+    @GetMapping(value = "/initial")
+    public Flux<Department> allInitial() {
+        return this.departmentRepo.findAllInitial();
     }
 
     /**
@@ -47,7 +55,7 @@ public class DepartmentController {
      */
     @PostMapping(value = "")
     @ResponseStatus(HttpStatus.CREATED)
-    public Mono<Department> create(Department department) {
+    public Mono<Department> createPost(@RequestBody Department department) {
         return this.departmentRepo.createPost(department);
     }
 

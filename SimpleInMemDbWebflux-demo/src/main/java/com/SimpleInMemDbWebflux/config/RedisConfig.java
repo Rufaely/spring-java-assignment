@@ -1,62 +1,38 @@
-/*
+
+
 package com.SimpleInMemDbWebflux.config;
 
-import com.SimpleInMemDbWebflux.model.Department;
-import com.SimpleInMemDbWebflux.model.Employee;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.data.redis.connection.ReactiveKeyCommands;
-import org.springframework.data.redis.connection.ReactiveRedisConnectionFactory;
-import org.springframework.data.redis.connection.ReactiveStringCommands;
-import org.springframework.data.redis.connection.RedisConnectionFactory;
-import org.springframework.data.redis.core.ReactiveRedisTemplate;
-import org.springframework.data.redis.serializer.Jackson2JsonRedisSerializer;
-import org.springframework.data.redis.serializer.RedisSerializationContext;
+import org.springframework.data.redis.connection.RedisStandaloneConfiguration;
+import org.springframework.data.redis.connection.lettuce.LettuceConnectionFactory;
+import org.springframework.data.redis.core.RedisTemplate;
+import org.springframework.data.redis.repository.configuration.EnableRedisRepositories;
+import org.springframework.data.redis.serializer.JdkSerializationRedisSerializer;
+import org.springframework.data.redis.serializer.RedisSerializer;
 import org.springframework.data.redis.serializer.StringRedisSerializer;
 
-import javax.annotation.PreDestroy;
-
 @Configuration
+@EnableRedisRepositories
 public class RedisConfig {
-    @Autowired
-    RedisConnectionFactory factory;
-
     @Bean
-    public ReactiveRedisTemplate<String, Employee> empReactiveRedisTemplate(ReactiveRedisConnectionFactory factory) {
-        Jackson2JsonRedisSerializer<Employee> serializer = new Jackson2JsonRedisSerializer<>(Employee.class);
-        RedisSerializationContext.RedisSerializationContextBuilder<String, Employee> builder = RedisSerializationContext.newSerializationContext(new StringRedisSerializer());
-        RedisSerializationContext<String, Employee> context = builder.value(serializer).build();
-        return new ReactiveRedisTemplate<>(factory, context);
+    public LettuceConnectionFactory redisConnectionFactory() {
+        RedisStandaloneConfiguration redisStandaloneConfiguration = new RedisStandaloneConfiguration("localhost", 6379);
+        return new LettuceConnectionFactory(redisStandaloneConfiguration);
     }
 
     @Bean
-    public ReactiveRedisTemplate<String, Department> depReactiveRedisTemplate(ReactiveRedisConnectionFactory factory) {
-        Jackson2JsonRedisSerializer<Department> serializer = new Jackson2JsonRedisSerializer<>(Department.class);
-        RedisSerializationContext.RedisSerializationContextBuilder<String, Department> builder = RedisSerializationContext.newSerializationContext(new StringRedisSerializer());
-        RedisSerializationContext<String, Department> context = builder.value(serializer).build();
-        return new ReactiveRedisTemplate<>(factory, context);
-    }
-
-    @Bean
-    public ReactiveRedisTemplate<String, String> reactiveRedisTemplateString(ReactiveRedisConnectionFactory connectionFactory) {
-        return new ReactiveRedisTemplate<>(connectionFactory, RedisSerializationContext.string());
-    }
-
-    @Bean
-    public ReactiveKeyCommands keyCommands(final ReactiveRedisConnectionFactory reactiveRedisConnectionFactory) {
-        return reactiveRedisConnectionFactory.getReactiveConnection().keyCommands();
-    }
-
-    @Bean
-    public ReactiveStringCommands stringCommands(final ReactiveRedisConnectionFactory reactiveRedisConnectionFactory) {
-        return reactiveRedisConnectionFactory.getReactiveConnection().stringCommands();
-    }
-
-    @PreDestroy
-    public void cleanRedis() {
-        factory.getConnection().flushDb();
+    public RedisTemplate<?, ?> redisTemplate() {
+        RedisTemplate<String, Object> template = new RedisTemplate<>();
+        RedisSerializer<String> stringSerializer = new StringRedisSerializer();
+        JdkSerializationRedisSerializer jdkSerializationRedisSerializer = new JdkSerializationRedisSerializer();
+        template.setConnectionFactory(redisConnectionFactory());
+        template.setKeySerializer(stringSerializer);
+        template.setHashKeySerializer(stringSerializer);
+        template.setValueSerializer(jdkSerializationRedisSerializer);
+        template.setHashValueSerializer(jdkSerializationRedisSerializer);
+        template.setEnableTransactionSupport(true);
+        template.afterPropertiesSet();
+        return template;
     }
 }
-
-*/

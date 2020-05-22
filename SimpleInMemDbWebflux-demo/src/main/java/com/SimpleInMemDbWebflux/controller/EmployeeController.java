@@ -2,7 +2,7 @@ package com.SimpleInMemDbWebflux.controller;
 
 
 import com.SimpleInMemDbWebflux.model.Employee;
-import com.SimpleInMemDbWebflux.repository.EmployeeRepo;
+import com.SimpleInMemDbWebflux.repository.Impl.EmployeeRepoImpl;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 import reactor.core.publisher.Flux;
@@ -12,16 +12,24 @@ import reactor.core.publisher.Mono;
  *
  */
 @RestController
-    @RequestMapping(value = "/Employee")
+@RequestMapping(value = "/Employee")
 public class EmployeeController {
 
-    private final EmployeeRepo employeeRepo;
+    private final EmployeeRepoImpl employeeRepo;
 
     /**
      * @param employeeRepo
      */
-    public EmployeeController(EmployeeRepo employeeRepo) {
+    public EmployeeController(EmployeeRepoImpl employeeRepo) {
         this.employeeRepo = employeeRepo;
+    }
+
+    /**
+     * @return Flux<Employee>
+     */
+    @GetMapping(value = "/initial")
+    public Flux<Employee> allInitial() {
+        return this.employeeRepo.findAllInitial();
     }
 
     /**
@@ -47,7 +55,7 @@ public class EmployeeController {
      */
     @PostMapping(value = "")
     @ResponseStatus(HttpStatus.CREATED)
-    public Mono<Employee> create(Employee employee) {
+    public Mono<Employee> createPost(@RequestBody Employee employee) {
         return this.employeeRepo.createPost(employee);
     }
 

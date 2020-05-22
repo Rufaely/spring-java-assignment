@@ -1,8 +1,10 @@
 package com.SimpleInMemDbWebflux.model;
 
 import lombok.*;
-import org.springframework.data.redis.core.index.Indexed;
+import org.springframework.data.annotation.Id;
+import org.springframework.data.redis.core.RedisHash;
 
+import java.io.Serializable;
 import java.util.Objects;
 
 @Data
@@ -10,15 +12,16 @@ import java.util.Objects;
 //@Builder
 @NoArgsConstructor
 @AllArgsConstructor
-public class Employee {
+@RedisHash("employee")
+public class Employee implements Serializable {
 
-    @Indexed
+    @Id
     private long id;
     private String firstName;
-//    private String lastName;
+    private String lastName;
 
     /**
-     * @param Object
+     * @param o
      * @return boolean
      */
     @Override
