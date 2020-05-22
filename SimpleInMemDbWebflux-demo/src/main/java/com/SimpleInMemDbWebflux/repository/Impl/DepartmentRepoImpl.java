@@ -97,8 +97,10 @@ public class DepartmentRepoImpl implements DepartmentRepoInterface {
         Department dep = new Department();
         dep.setName(department.getName());
         dep.setEmployees(employeeList);
+
         try{
-            Mono.just(departmentRepo.save(dep));
+            Mono<Department> result =  factory.getReactiveConnection().serverCommands().bgSave().then(Mono.just(departmentRepo.save(dep)));
+//            Mono.just(departmentRepo.save(dep));
         }
         catch (DuplicateKeyException e){
             logger.info("For Department "+ dep.getName()+" " +dep.getId() +"is on DB");

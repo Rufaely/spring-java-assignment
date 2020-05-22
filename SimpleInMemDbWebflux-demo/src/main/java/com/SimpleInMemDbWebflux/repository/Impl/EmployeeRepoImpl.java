@@ -1,6 +1,7 @@
 package com.SimpleInMemDbWebflux.repository.Impl;
 
 
+import com.SimpleInMemDbWebflux.model.Department;
 import com.SimpleInMemDbWebflux.model.Employee;
 import com.SimpleInMemDbWebflux.repository.EmployeeRepo;
 import com.SimpleInMemDbWebflux.repository.EmployeeRepoInterface;
@@ -77,7 +78,8 @@ public class EmployeeRepoImpl implements EmployeeRepoInterface {
         emp.setFirstName(employee.getFirstName());
         emp.setLastName(employee.getLastName());
         try {
-            return Mono.just(employeeRepo.save(emp));
+            factory.getReactiveConnection().serverCommands().bgSave().then(Mono.just(employeeRepo.save(emp)));
+//            Mono.just(employeeRepo.save(emp));
         } catch (DuplicateKeyException e) {
             logger.info("First Name " + emp.getFirstName() + " " + emp.getId() + "is on DB");
             System.out.println("First Name " + emp.getFirstName() + " " + emp.getId() + "is on DB");
