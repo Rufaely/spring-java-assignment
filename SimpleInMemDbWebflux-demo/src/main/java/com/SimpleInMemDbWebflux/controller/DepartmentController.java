@@ -1,7 +1,7 @@
 package com.SimpleInMemDbWebflux.controller;
 
 import com.SimpleInMemDbWebflux.model.Department;
-import com.SimpleInMemDbWebflux.repository.Impl.DepartmentRepoImpl;
+import com.SimpleInMemDbWebflux.service.Impl.DepartmentRepoImpl;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 import reactor.core.publisher.Flux;

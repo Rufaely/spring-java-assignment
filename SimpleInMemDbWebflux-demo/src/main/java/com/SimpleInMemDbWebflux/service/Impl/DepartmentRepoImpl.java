@@ -1,18 +1,15 @@
-package com.SimpleInMemDbWebflux.repository.Impl;
+package com.SimpleInMemDbWebflux.service.Impl;
 
 import com.SimpleInMemDbWebflux.model.Department;
 import com.SimpleInMemDbWebflux.model.Employee;
 import com.SimpleInMemDbWebflux.repository.DepartmentRepo;
-import com.SimpleInMemDbWebflux.repository.DepartmentRepoInterface;
+import com.SimpleInMemDbWebflux.service.DepartmentRepoInterface;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DuplicateKeyException;
 import org.springframework.data.redis.connection.ReactiveRedisConnectionFactory;
-import org.springframework.data.redis.core.ReactiveRedisOperations;
-import org.springframework.data.redis.core.ReactiveRedisTemplate;
 import org.springframework.stereotype.Component;
-import reactor.core.CoreSubscriber;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
@@ -23,6 +20,8 @@ public class DepartmentRepoImpl implements DepartmentRepoInterface {
     private Logger logger = LoggerFactory.getLogger(DepartmentRepoImpl.class);
     private static final Map<Long, Department> DATA = new HashMap<>();
     private static long ID_COUNTER = 1L;
+    private static long EMP_ID = 1L;
+    private static long DEP_ID = 1L;
     @Autowired
     DepartmentRepo departmentRepo;
    /* @Autowired
@@ -62,6 +61,7 @@ public class DepartmentRepoImpl implements DepartmentRepoInterface {
 
     }
 
+
     @Override
     public Flux<Department> findAllInitial() {
         return Flux.fromIterable(DATA.values());
@@ -89,14 +89,22 @@ public class DepartmentRepoImpl implements DepartmentRepoInterface {
      * @return Mono<Department>
      */
     public Mono<Department> createPost(Department department) {
+
         List<Employee> employees = department.getEmployees();
-        List<Employee> employeeList = new ArrayList<>();
-        for (Employee employee:employees){
-            employeeList.add(employee);
+
+        for (int i=0;i<department.getEmployees().size();i++){
+
+            Employee employee = new Employee();
+            employee.setId(EMP_ID++);
+            employee.setFirstName(department.getEmployees().get(i).getFirstName());
+            employee.setLastName(department.getEmployees().get(i).getLastName());
+            employees.add(employee);
         }
+
         Department dep = new Department();
+        dep.setId(DEP_ID++);
         dep.setName(department.getName());
-        dep.setEmployees(employeeList);
+        dep.setEmployees(employees);
 
         try{
             Mono<Department> result =  factory.getReactiveConnection().serverCommands().bgSave().then(Mono.just(departmentRepo.save(dep)));

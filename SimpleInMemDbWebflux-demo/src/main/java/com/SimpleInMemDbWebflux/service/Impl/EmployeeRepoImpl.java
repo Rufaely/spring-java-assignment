@@ -1,10 +1,9 @@
-package com.SimpleInMemDbWebflux.repository.Impl;
+package com.SimpleInMemDbWebflux.service.Impl;
 
 
-import com.SimpleInMemDbWebflux.model.Department;
 import com.SimpleInMemDbWebflux.model.Employee;
 import com.SimpleInMemDbWebflux.repository.EmployeeRepo;
-import com.SimpleInMemDbWebflux.repository.EmployeeRepoInterface;
+import com.SimpleInMemDbWebflux.service.EmployeeRepoInterface;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -75,6 +74,8 @@ public class EmployeeRepoImpl implements EmployeeRepoInterface {
 
     public Mono<Employee> createPost(Employee employee) {
         Employee emp = new Employee();
+        Long id = ID_COUNTER++;
+        emp.setId(id);
         emp.setFirstName(employee.getFirstName());
         emp.setLastName(employee.getLastName());
         try {

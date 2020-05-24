@@ -2,7 +2,7 @@ package com.SimpleInMemDbWebflux.controller;
 
 
 import com.SimpleInMemDbWebflux.model.Employee;
-import com.SimpleInMemDbWebflux.repository.Impl.EmployeeRepoImpl;
+import com.SimpleInMemDbWebflux.service.Impl.EmployeeRepoImpl;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 import reactor.core.publisher.Flux;
