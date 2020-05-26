@@ -16,7 +16,7 @@ import java.util.List;
 public class Department implements Serializable {
 
     @Id
-    private String  id;
+    private String id;
     private String name;
     private List<Employee> employees;
 }

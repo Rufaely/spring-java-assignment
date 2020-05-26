@@ -15,7 +15,7 @@ import java.io.Serializable;
 public class Employee implements Serializable {
 
     @Id
-    private String  id;
+    private String id;
     private String firstName;
     private String lastName;
 }
