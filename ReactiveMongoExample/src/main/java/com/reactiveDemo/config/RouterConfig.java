@@ -14,7 +14,7 @@ public class RouterConfig {
 
         return RouterFunctions.route(RequestPredicates.GET("/Department"), routerHandlers::getAllDep)
                 .andRoute(RequestPredicates.GET("/Department/{id}"), routerHandlers::getDepById)
-                .andRoute(RequestPredicates.DELETE("Department"), routerHandlers::deleteDep)
+                .andRoute(RequestPredicates.DELETE("/Department"), routerHandlers::deleteDep)
 //                .andRoute(RequestPredicates.POST("/Department"), routerHandlers::createDep)
 
                 .andRoute(RequestPredicates.GET("/Employee"), routerHandlers::getAllEmp)
@@ -23,6 +23,5 @@ public class RouterConfig {
 //                .andRoute(RequestPredicates.POST("/Employee"),routerHandlers::creatEmp);
                 ;
     }
-
 
 }

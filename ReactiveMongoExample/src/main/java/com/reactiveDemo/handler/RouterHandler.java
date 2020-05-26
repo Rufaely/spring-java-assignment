@@ -14,13 +14,14 @@ import java.util.List;
 
 @Component
 public class RouterHandler {
-    private DepartmentRepo departmentRepo;
-    private EmployeeRepo employeeRepo;
+    private final DepartmentRepo departmentRepo;
+    private final EmployeeRepo employeeRepo;
 
     public RouterHandler(DepartmentRepo departmentRepo, EmployeeRepo employeeRepo) {
         this.departmentRepo = departmentRepo;
         this.employeeRepo = employeeRepo;
     }
+
 
     public Mono<ServerResponse> getAllDep(ServerRequest serverRequest) {
         return ServerResponse
