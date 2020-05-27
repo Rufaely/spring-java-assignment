@@ -7,8 +7,15 @@ import org.springframework.web.reactive.function.server.RequestPredicates;
 import org.springframework.web.reactive.function.server.RouterFunction;
 import org.springframework.web.reactive.function.server.RouterFunctions;
 
+/**
+ * created by Rufael K yohannes
+ */
 @Configuration
 public class RouterConfig {
+    /**
+     * @param routerHandlers
+     * @return RouterFunction<?>
+     */
     @Bean
     RouterFunction<?> depRouterFunction(RouterHandler routerHandlers) {
 

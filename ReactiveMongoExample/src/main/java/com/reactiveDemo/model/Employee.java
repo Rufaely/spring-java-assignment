@@ -6,6 +6,9 @@ import org.springframework.data.mongodb.core.mapping.Document;
 
 import java.io.Serializable;
 
+/**
+ * created by Rufael K yohannes
+ */
 @Data
 @ToString
 @EqualsAndHashCode

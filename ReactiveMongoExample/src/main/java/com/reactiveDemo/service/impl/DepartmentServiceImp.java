@@ -11,25 +11,42 @@ import reactor.core.publisher.Mono;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * created by Rufael K yohannes
+ */
 @Component
 public class DepartmentServiceImp implements DepartmentService {
     private final DepartmentRepo departmentRepo;
 
+    /**
+     * @param departmentRepo
+     */
     public DepartmentServiceImp(DepartmentRepo departmentRepo) {
         this.departmentRepo = departmentRepo;
     }
 
 
+    /**
+     * @return Flux<Department>
+     */
     @Override
     public Flux<Department> all() {
         return departmentRepo.findAll();
     }
 
+    /**
+     * @param id
+     * @return Mono<Department>
+     */
     @Override
     public Mono<Department> get(String id) {
         return departmentRepo.findById(id);
     }
 
+    /**
+     * @param department
+     * @return Mono<Department>
+     */
     @Override
     public Mono<Department> createDep(Department department) {
         Employee newEmp = new Employee();
@@ -45,6 +62,9 @@ public class DepartmentServiceImp implements DepartmentService {
         return this.departmentRepo.save(newDep);
     }
 
+    /**
+     * @param id
+     */
     @Override
     public void delete(String id) {
         departmentRepo.deleteById(id);

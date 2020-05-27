@@ -12,23 +12,38 @@ import reactor.core.publisher.Mono;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * created by Rufael K yohannes
+ */
 @Component
 public class RouterHandler {
     private final DepartmentRepo departmentRepo;
     private final EmployeeRepo employeeRepo;
 
+    /**
+     * @param departmentRepo
+     * @param employeeRepo
+     */
     public RouterHandler(DepartmentRepo departmentRepo, EmployeeRepo employeeRepo) {
         this.departmentRepo = departmentRepo;
         this.employeeRepo = employeeRepo;
     }
 
 
+    /**
+     * @param serverRequest
+     * @return Mono<ServerResponse>
+     */
     public Mono<ServerResponse> getAllDep(ServerRequest serverRequest) {
         return ServerResponse
                 .ok()
                 .body(departmentRepo.findAll(), Department.class);
     }
 
+    /**
+     * @param serverRequest
+     * @return Mono<ServerResponse>
+     */
     public Mono<ServerResponse> getDepById(ServerRequest serverRequest) {
 
         String depId = serverRequest.pathVariable("id");
@@ -37,6 +52,11 @@ public class RouterHandler {
                 .body(departmentRepo.findById(depId), Department.class);
     }
 
+    /**
+     * @param serverRequest
+     * @param department
+     * @return Mono<ServerResponse>
+     */
     public Mono<ServerResponse> createDep(ServerRequest serverRequest, Department department) {
         Employee newEmp = new Employee();
         List<Employee> employees = new ArrayList<>();
@@ -53,6 +73,10 @@ public class RouterHandler {
                 .body(departmentRepo.save(newDep), Department.class);
     }
 
+    /**
+     * @param serverRequest
+     * @return Mono<ServerResponse>
+     */
     public Mono<ServerResponse> deleteDep(ServerRequest serverRequest) {
         String depId = serverRequest.pathVariable("id");
         return ServerResponse
@@ -60,12 +84,20 @@ public class RouterHandler {
                 .body(departmentRepo.deleteById(depId), Department.class);
     }
 
+    /**
+     * @param serverRequest
+     * @return Mono<ServerResponse>
+     */
     public Mono<ServerResponse> getAllEmp(ServerRequest serverRequest) {
         return ServerResponse
                 .ok()
                 .body(employeeRepo.findAll(), Employee.class);
     }
 
+    /**
+     * @param serverRequest
+     * @return Mono<ServerResponse>
+     */
     public Mono<ServerResponse> getEmpById(ServerRequest serverRequest) {
 
         String empId = serverRequest.pathVariable("id");
@@ -75,6 +107,11 @@ public class RouterHandler {
     }
 
 
+    /**
+     * @param serverRequest
+     * @param employee
+     * @return Mono<ServerResponse>
+     */
     public Mono<ServerResponse> creatEmp(ServerRequest serverRequest, Employee employee) {
         Employee newEmp = new Employee();
         newEmp.setFirstName(employee.getFirstName());
@@ -85,6 +122,10 @@ public class RouterHandler {
     }
 
 
+    /**
+     * @param serverRequest
+     * @return Mono<ServerResponse>
+     */
     public Mono<ServerResponse> deleteEmp(ServerRequest serverRequest) {
         String empId = serverRequest.pathVariable("id");
         return ServerResponse

@@ -7,24 +7,41 @@ import org.springframework.stereotype.Component;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
+/**
+ * created by Rufael K yohannes
+ */
 @Component
 public class EmployeeServiceImp implements EmployeeService {
     private final EmployeeRepo employeeRepo;
 
+    /**
+     * @param employeeRepo
+     */
     public EmployeeServiceImp(EmployeeRepo employeeRepo) {
         this.employeeRepo = employeeRepo;
     }
 
+    /**
+     * @return Flux<Employee>
+     */
     @Override
     public Flux<Employee> all() {
         return employeeRepo.findAll();
     }
 
+    /**
+     * @param id
+     * @return Mono<Employee>
+     */
     @Override
     public Mono<Employee> get(String id) {
         return employeeRepo.findById(id);
     }
 
+    /**
+     * @param employee
+     * @return Mono<Employee>
+     */
     @Override
     public Mono<Employee> createEmp(Employee employee) {
         Employee newEmp = new Employee();
@@ -33,6 +50,9 @@ public class EmployeeServiceImp implements EmployeeService {
         return this.employeeRepo.save(newEmp);
     }
 
+    /**
+     * @param id
+     */
     @Override
     public void delete(String id) {
         employeeRepo.deleteById(id);
