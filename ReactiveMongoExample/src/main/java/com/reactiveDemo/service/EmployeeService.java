@@ -29,6 +29,8 @@ public interface EmployeeService {
 
     /**
      * @param id
+     * @return
      */
-    public void delete(String id);
+    public Mono<Employee> delete(String id);
+
 }

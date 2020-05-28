@@ -4,6 +4,7 @@ import com.reactiveDemo.model.Department;
 import com.reactiveDemo.model.Employee;
 import com.reactiveDemo.repository.DepartmentRepo;
 import com.reactiveDemo.repository.EmployeeRepo;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.springframework.web.reactive.function.server.ServerRequest;
 import org.springframework.web.reactive.function.server.ServerResponse;
@@ -17,10 +18,16 @@ import java.util.List;
  */
 @Component
 public class RouterHandler {
-    private final DepartmentRepo departmentRepo;
-    private final EmployeeRepo employeeRepo;
+    @Autowired
+    private  DepartmentRepo departmentRepo;
+    @Autowired
+    private  EmployeeRepo employeeRepo;
+
+//    private final DepartmentService departmentService;
+//    private final EmployeeService employeeService;
 
     /**
+
      * @param departmentRepo
      * @param employeeRepo
      */
@@ -59,14 +66,8 @@ public class RouterHandler {
      */
     public Mono<ServerResponse> createDep(ServerRequest serverRequest, Department department) {
         Employee newEmp = new Employee();
-        List<Employee> employees = new ArrayList<>();
-        for (Employee employee : department.getEmployees()) {
-            newEmp.setFirstName(employee.getFirstName());
-            newEmp.setLastName(employee.getLastName());
-            employees.add(newEmp);
-        }
+
         Department newDep = new Department();
-        newDep.setEmployees(employees);
         newDep.setName(department.getName());
         return ServerResponse
                 .ok()
@@ -112,7 +113,7 @@ public class RouterHandler {
      * @param employee
      * @return Mono<ServerResponse>
      */
-    public Mono<ServerResponse> creatEmp(ServerRequest serverRequest, Employee employee) {
+    public Mono<ServerResponse> createEmp(ServerRequest serverRequest, Employee employee) {
         Employee newEmp = new Employee();
         newEmp.setFirstName(employee.getFirstName());
         newEmp.setLastName(employee.getLastName());

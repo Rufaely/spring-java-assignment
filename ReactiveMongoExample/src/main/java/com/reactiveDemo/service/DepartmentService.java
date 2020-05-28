@@ -30,5 +30,5 @@ public interface DepartmentService {
     /**
      * @param id
      */
-    public void delete(String id);
+    public Mono<Department> delete(String id);
 }

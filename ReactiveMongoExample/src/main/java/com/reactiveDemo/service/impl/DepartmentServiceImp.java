@@ -51,14 +51,13 @@ public class DepartmentServiceImp implements DepartmentService {
     public Mono<Department> createDep(Department department) {
         Employee newEmp = new Employee();
         List<Employee> employees = new ArrayList<>();
-        for (Employee employee : department.getEmployees()) {
-            newEmp.setFirstName(employee.getFirstName());
-            newEmp.setLastName(employee.getLastName());
-            employees.add(newEmp);
-        }
         Department newDep = new Department();
+        for (Employee employee : department.getEmployees()) {
+            employees.add(employee);
+        }
         newDep.setEmployees(employees);
         newDep.setName(department.getName());
+
         return this.departmentRepo.save(newDep);
     }
 
@@ -66,7 +65,14 @@ public class DepartmentServiceImp implements DepartmentService {
      * @param id
      */
     @Override
-    public void delete(String id) {
-        departmentRepo.deleteById(id);
+    public Mono<Department> delete(String id) {
+        return departmentRepo.findById(id)
+                .flatMap(oldValue ->
+                        departmentRepo.deleteById(id)
+                                .then(Mono.just(oldValue))
+                )
+                .single();
+
     }
+
 }

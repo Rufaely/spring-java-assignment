@@ -3,6 +3,7 @@ package com.reactiveDemo.service.impl;
 import com.reactiveDemo.model.Employee;
 import com.reactiveDemo.repository.EmployeeRepo;
 import com.reactiveDemo.service.EmployeeService;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
@@ -12,6 +13,7 @@ import reactor.core.publisher.Mono;
  */
 @Component
 public class EmployeeServiceImp implements EmployeeService {
+    @Autowired
     private final EmployeeRepo employeeRepo;
 
     /**
@@ -52,9 +54,17 @@ public class EmployeeServiceImp implements EmployeeService {
 
     /**
      * @param id
+     * @return
      */
     @Override
-    public void delete(String id) {
-        employeeRepo.deleteById(id);
+    public Mono<Employee> delete(String id) {
+        return employeeRepo.findById(id)
+                .flatMap(oldValue ->
+                        employeeRepo.deleteById(id)
+                                .then(Mono.just(oldValue))
+                )
+                .single();
+
     }
+
 }

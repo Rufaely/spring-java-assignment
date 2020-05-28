@@ -20,22 +20,17 @@ class DepartmentTest {
         employee.setLastName("kidanemariam");
         employees.add(employee);
         department.setName("Finance");
-        department.setEmployees(employees);
     }
     @Test
     void getId() {
         assertNull(department.getId());
-        }
+    }
 
     @Test
     void getName() {
         assertEquals(department.getName(),"Finance");
     }
 
-    @Test
-    void getEmployees() {
-        assertEquals(department.getEmployees(),employees);
-    }
 
     @Test
     void setId() {
@@ -48,11 +43,5 @@ class DepartmentTest {
         department.setName("Commerce");
 
         assertEquals(department.getName(),"Commerce");
-    }
-
-    @Test
-    void setEmployees() {
-        department.setEmployees(null);
-        assertNull(department.getEmployees());
     }
 }

@@ -56,8 +56,8 @@ public class DepartmentController {
      * @param id
      */
     @DeleteMapping(value = "/{id}")
-    public void delete(@PathVariable(value = "id") String id){
-        departmentService.delete(id);
+    public Mono<Department> delete(@PathVariable(value = "id") String id){
+        return departmentService.delete(id);
     }
 
 }
