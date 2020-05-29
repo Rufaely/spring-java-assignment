@@ -45,8 +45,8 @@ public class RouterConfig {
                 .andRoute(RequestPredicates.DELETE("/router/Employee"), routerHandlers::deleteEmp)
                 .andRoute(RequestPredicates.POST("/router/Employee")
                         .and(accept(MediaType.APPLICATION_JSON)).and(contentType(MediaType.APPLICATION_JSON)), serverRequest -> {
-                    Mono<ServerResponse> dep = routerHandlers.createEmp(serverRequest,new Employee());
-                    return dep;
+                    Mono<ServerResponse> emp = routerHandlers.createEmp(serverRequest,new Employee());
+                    return emp;
                 });
     }
 

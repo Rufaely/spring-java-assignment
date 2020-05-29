@@ -10,32 +10,25 @@ import org.springframework.web.reactive.function.server.ServerRequest;
 import org.springframework.web.reactive.function.server.ServerResponse;
 import reactor.core.publisher.Mono;
 
-import java.util.ArrayList;
-import java.util.List;
-
 /**
  * created by Rufael K yohannes
  */
 @Component
 public class RouterHandler {
-    @Autowired
-    private  DepartmentRepo departmentRepo;
-    @Autowired
-    private  EmployeeRepo employeeRepo;
 
-//    private final DepartmentService departmentService;
-//    private final EmployeeService employeeService;
+    private  final DepartmentRepo departmentRepo;
+    private  final EmployeeRepo employeeRepo;
+
+    public RouterHandler(@Autowired DepartmentRepo departmentRepo, @Autowired EmployeeRepo employeeRepo) {
+        this.departmentRepo = departmentRepo;
+        this.employeeRepo = employeeRepo;
+    }
 
     /**
 
      * @param departmentRepo
      * @param employeeRepo
      */
-    public RouterHandler(DepartmentRepo departmentRepo, EmployeeRepo employeeRepo) {
-        this.departmentRepo = departmentRepo;
-        this.employeeRepo = employeeRepo;
-    }
-
 
     /**
      * @param serverRequest
