@@ -3,7 +3,7 @@ package com.reactiveDemo.model;
 import lombok.*;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
-
+import javax.validation.constraints.NotNull;
 import java.io.Serializable;
 import java.util.List;
 
@@ -20,7 +20,10 @@ public class Department implements Serializable {
 
     @Id
     private String id;
+//    @Pattern("[a-zA-Z]")
+    @NotNull(message = " Department name can not be null")
     private String name;
+    @NonNull
     private List<Employee> employees;
 
 

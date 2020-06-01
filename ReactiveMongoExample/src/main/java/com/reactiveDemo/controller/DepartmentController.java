@@ -8,6 +8,8 @@ import org.springframework.web.bind.annotation.*;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
+import javax.validation.Valid;
+
 /**
  * created by Rufael K yohannes
  */
@@ -38,7 +40,7 @@ public class DepartmentController {
      * @return Mono<Department>
      */
     @GetMapping(value = "/{id}")
-    public Mono<Department> get(@PathVariable(value = "id") String id) {
+    public Mono<Department> get(@Valid @PathVariable(value = "id") String id) {
         return this.departmentService.get(id);
     }
 
@@ -48,7 +50,7 @@ public class DepartmentController {
      */
     @PostMapping(value = "")
     @ResponseStatus(HttpStatus.CREATED)
-    public Mono<Department> createDep(@RequestBody Department department) {
+    public Mono<Department> createDep(@Valid @RequestBody Department department) {
         return this.departmentService.createDep(department);
     }
 
@@ -57,10 +59,9 @@ public class DepartmentController {
      * @return
      */
     @DeleteMapping(value = "/{id}")
-    public Mono<Department> delete(@PathVariable(value = "id") String id){
+    public Mono<Department> delete(@Valid @PathVariable(value = "id") String id){
         return departmentService.delete(id);
     }
 
 }
-
 
