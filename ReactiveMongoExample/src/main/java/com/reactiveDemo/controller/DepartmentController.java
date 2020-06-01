@@ -54,6 +54,7 @@ public class DepartmentController {
 
     /**
      * @param id
+     * @return
      */
     @DeleteMapping(value = "/{id}")
     public Mono<Department> delete(@PathVariable(value = "id") String id){

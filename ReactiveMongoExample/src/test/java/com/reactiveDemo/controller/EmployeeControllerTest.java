@@ -1,117 +1,106 @@
-/*
 
 package com.reactiveDemo.controller;
-import static org.mockito.Mockito.times;
 
-import com.reactiveDemo.ReactiveMongoExampleApplicationTests;
 import com.reactiveDemo.model.Employee;
-import com.reactiveDemo.repository.EmployeeRepo;
-import com.reactiveDemo.service.impl.EmployeeServiceImp;
+import com.reactiveDemo.service.EmployeeService;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
-import org.mockito.Mockito;
+import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.autoconfigure.web.reactive.WebFluxTest;
+import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
-import org.springframework.context.ApplicationContext;
-import org.springframework.context.annotation.Import;
-import org.springframework.http.MediaType;
-import org.springframework.test.context.ContextConfiguration;
+import org.springframework.boot.test.web.client.TestRestTemplate;
+import org.springframework.boot.web.server.LocalServerPort;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
-import org.springframework.test.web.reactive.server.WebTestClient;
-import org.springframework.web.reactive.function.BodyInserters;
+import org.springframework.test.context.junit4.SpringRunner;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
-import java.util.Collections;
+import static org.assertj.core.api.Assertions.assertThat;
+import static org.mockito.Mockito.when;
 
-@ContextConfiguration(classes = ReactiveMongoExampleApplicationTests.class)
+@AutoConfigureMockMvc
+@RunWith(SpringRunner.class)
 @ExtendWith(SpringExtension.class)
-@WebFluxTest(controllers = EmployeeController.class)
-@Import(EmployeeServiceImp.class)
+@SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 class EmployeeControllerTest {
 
-    @MockBean
-    EmployeeRepo employeeRepo;
     @Autowired
-    private WebTestClient webClient;
+    private EmployeeController employeeController;
+
+    @MockBean
+    private EmployeeService employeeService;
+
+    Mono<Employee> employeeMono;
+    Flux<Employee> employeeFlux;
 
     @BeforeEach
-    void setUp(ApplicationContext context) {
-        webClient = WebTestClient
-                .bindToApplicationContext(context)
-                .build();
-    }
+    public void setup(){
 
+        Employee employee1 = new Employee();
+        employee1.setFirstName("Rufael");
+        employee1.setLastName("Kidanemariam");
 
-    @Test
-    void all() {
-        Mockito
-                .when(employeeRepo.findAll())
-                .thenReturn(Flux.empty());
-        webClient.get().uri("/Employee")
-                .exchange()
-                .expectStatus().isOk()
-                .expectBody()
-                .jsonPath("$.name").isEmpty()
-                .jsonPath("$.employees").isEmpty();
-        Mockito.verify(employeeRepo, times(1)).findAll();
+        Employee employee2 = new Employee();
+        employee2.setFirstName("Mekonen");
+        employee2.setLastName("Yohannes");
+
+        Employee employee3 = new Employee();
+        employee3.setFirstName("Mekonen");
+        employee3.setLastName("Kidanemariam");
+
+        employeeMono = Mono.just(employee1);
+        employeeFlux = Flux.just(employee1,employee2,employee3);
     }
 
     @Test
-    void getEmp() {
-        Employee employee = new Employee();
-        employee.setId("1");
-        employee.setFirstName("Test First");
-        employee.setLastName("Test Last");
+    public void contexLoads() throws Exception {
+        assertThat(employeeController).isNotNull();
+    }
 
-        Mockito
-                .when(employeeRepo.findById("2"))
-                .thenReturn(Mono.just(employee));
 
-        webClient.get().uri("/Employee/{id}", Collections.singletonMap("id", employee.getFirstName()))
-                .exchange()
-                .expectStatus().isOk()
-                .expectBody()
-                .jsonPath("$.firstName").isNotEmpty()
-                .jsonPath("$.firstName").isEqualTo("Test First")
-                .jsonPath("$.lastName").isEqualTo("Test Last");
+    @LocalServerPort
+    private int port;
 
-        Mockito.verify(employeeRepo, times(1)).findById("2");
+    @Autowired
+    private TestRestTemplate restTemplate;
+
+    @Test
+    public void testingEmpController() throws Exception {
+        assertThat(this.restTemplate.getForObject("http://localhost:" + port + "/Employee",
+                Employee.class));
     }
 
     @Test
-    void createEmp() {
-        Employee employee = new Employee();
-        employee.setId("1");
-        employee.setFirstName("Test First");
-        employee.setLastName("Test Last");
+    public void get(){
+        when(employeeService.get("1")).thenReturn(employeeMono);
+        Mono<Employee> actualEmp = employeeController.get("1");
+        assertThat(actualEmp).isEqualTo(employeeMono);
 
-        Mockito.when(employeeRepo.save(employee)).thenReturn(Mono.just(employee));
+    }
+    @Test
+    public void all(){
+        when(employeeService.all()).thenReturn(employeeFlux);
+        Flux<Employee> actualEmps = employeeController.all();
+        assertThat(actualEmps).isEqualTo(employeeFlux);
 
-        webClient.post()
-                .uri("/Employee")
-                .contentType(MediaType.APPLICATION_JSON)
-                .body(BodyInserters.fromObject(employee))
-                .exchange()
-                .expectStatus().isCreated();
-
-        Mockito.verify(employeeRepo, times(1)).save(employee);
     }
 
     @Test
-    void delete() {
-        Mono<Void> voidReturn = Mono.empty();
-        Mockito
-                .when(employeeRepo.deleteById("1"))
-                .thenReturn(voidReturn);
-
-        webClient.delete().uri("Employee/{id}", 1)
-                .exchange()
-                .expectStatus().isOk();
+    public void createEmp(){
+        when(employeeService.createEmp(employeeMono.block())).thenReturn(employeeMono);
+        Mono<Employee> actualEmp = employeeController.createEmp(employeeMono.block());
+        assertThat(actualEmp).isEqualTo(employeeMono);
+    }
+    @Test
+    public void delete(){
+        when(employeeService.delete("1")).thenReturn(employeeMono);
+        Mono<Employee> actualEmp = employeeController.delete("1");
+        assertThat(actualEmp).isEqualTo(employeeMono);
     }
 
 }
-*/
+
+

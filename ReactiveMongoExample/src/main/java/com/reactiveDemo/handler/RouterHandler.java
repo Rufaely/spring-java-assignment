@@ -19,16 +19,16 @@ public class RouterHandler {
     private  final DepartmentRepo departmentRepo;
     private  final EmployeeRepo employeeRepo;
 
+    /**
+     * @param departmentRepo
+     * @param employeeRepo
+     */
     public RouterHandler(@Autowired DepartmentRepo departmentRepo, @Autowired EmployeeRepo employeeRepo) {
         this.departmentRepo = departmentRepo;
         this.employeeRepo = employeeRepo;
     }
 
-    /**
 
-     * @param departmentRepo
-     * @param employeeRepo
-     */
 
     /**
      * @param serverRequest

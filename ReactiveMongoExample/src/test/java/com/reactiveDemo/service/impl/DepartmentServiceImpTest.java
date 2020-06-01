@@ -1,17 +1,13 @@
 package com.reactiveDemo.service.impl;
 
-import com.reactiveDemo.ReactiveMongoExampleApplicationTests;
 import com.reactiveDemo.model.Department;
 import com.reactiveDemo.model.Employee;
 import com.reactiveDemo.repository.DepartmentRepo;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.data.mongo.DataMongoTest;
 import org.springframework.context.annotation.Import;
-import org.springframework.test.context.ContextConfiguration;
-import org.springframework.test.context.junit.jupiter.SpringExtension;
 import org.springframework.util.StringUtils;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
@@ -19,7 +15,6 @@ import reactor.test.StepVerifier;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.UUID;
 import java.util.function.Predicate;
 
 @DataMongoTest
@@ -29,7 +24,7 @@ class DepartmentServiceImpTest {
     private final DepartmentServiceImp departmentServiceImp;
     private final DepartmentRepo departmentRepo;
 
-    Employee employee= new Employee();
+    Employee employee = new Employee();
     Department department = new Department();
     List<Employee> employees = new ArrayList<>();
 
@@ -50,7 +45,7 @@ class DepartmentServiceImpTest {
     @Test
     void all() {
         Flux<Department> departmentFlux = departmentRepo.saveAll(Flux.just(
-                department,department,department));
+                department, department, department));
         Flux<Department> departmentFlux1 = departmentServiceImp.all().thenMany(departmentFlux);
         Predicate<Department> predicate = dep -> departmentFlux.any(saveItem -> saveItem.equals(dep)).block();
         StepVerifier

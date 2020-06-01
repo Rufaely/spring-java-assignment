@@ -17,18 +17,20 @@ public interface DepartmentService {
 
     /**
      * @param id
-     * @return Mono<Employee>
+     * @return Mono<Department>
      */
     public Mono<Department> get(String id);
 
     /**
      * @param department
-     * @return Mono<Employee>
+     * @return Mono<Department>
      */
     public Mono<Department> createDep(Department department);
 
+
     /**
      * @param id
+     * @return Mono<Department>
      */
     public Mono<Department> delete(String id);
 }

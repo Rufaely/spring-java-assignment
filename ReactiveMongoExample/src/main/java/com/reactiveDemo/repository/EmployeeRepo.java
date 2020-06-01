@@ -11,5 +11,4 @@ import reactor.core.publisher.Mono;
 @Repository
 public interface EmployeeRepo extends ReactiveMongoRepository<Employee, String> {
 
-
 }

@@ -54,16 +54,14 @@ public class EmployeeServiceImp implements EmployeeService {
 
     /**
      * @param id
-     * @return
+     * @return Mono<Employee>
      */
     @Override
     public Mono<Employee> delete(String id) {
         return employeeRepo.findById(id)
                 .flatMap(oldValue ->
                         employeeRepo.deleteById(id)
-                                .then(Mono.just(oldValue))
-                )
-                .single();
+                                .then(Mono.just(oldValue))).single();
 
     }
 

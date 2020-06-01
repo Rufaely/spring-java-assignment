@@ -1,6 +1,5 @@
 package com.reactiveDemo.service.impl;
 
-import com.reactiveDemo.model.Department;
 import com.reactiveDemo.model.Employee;
 import com.reactiveDemo.repository.EmployeeRepo;
 import org.junit.jupiter.api.BeforeEach;
@@ -36,7 +35,7 @@ class EmployeeServiceImpTest {
     @Test
     void all() {
         Flux<Employee> employeeFlux = employeeRepo.saveAll(Flux.just(
-                employee,employee,employee));
+                employee, employee, employee));
         Flux<Employee> employeeFlux1 = employeeServiceImp.all().thenMany(employeeFlux);
         Predicate<Employee> predicate = emp -> employeeFlux.any(saveItem -> saveItem.equals(emp)).block();
         StepVerifier

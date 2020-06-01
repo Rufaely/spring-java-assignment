@@ -29,7 +29,7 @@ public interface EmployeeService {
 
     /**
      * @param id
-     * @return
+     * @return Mono<Employee>
      */
     public Mono<Employee> delete(String id);
 

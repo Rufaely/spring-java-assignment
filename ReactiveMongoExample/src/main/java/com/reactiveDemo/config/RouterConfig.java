@@ -26,49 +26,30 @@ public class RouterConfig {
      */
 
     @Bean
-    RouterFunction<?> getOneDep(RouterHandler routerHandlers){
-       return RouterFunctions.route(RequestPredicates.GET("/router/Department/{id}")
-                .and(accept(MediaType.APPLICATION_JSON)), routerHandlers::getDepById);
-    }
-    @Bean
-    RouterFunction<?> getAllDep(RouterHandler routerHandlers){
+    RouterFunction<?> routerFunctions(RouterHandler routerHandlers) {
         return RouterFunctions.route(RequestPredicates.GET("/router/Department")
-                .and(accept(MediaType.APPLICATION_JSON)), routerHandlers::getAllDep);
-    }
-    @Bean
-    RouterFunction<?> creatDep(RouterHandler routerHandlers){
-        return RouterFunctions.route(RequestPredicates.POST("/router/Department")
-                .and(accept(MediaType.APPLICATION_JSON)).and(contentType(MediaType.APPLICATION_JSON)), serverRequest -> {
-            Mono<ServerResponse> dep = routerHandlers.createDep(serverRequest,new Department());
-            return dep;
-        });
-    }
-    @Bean
-    RouterFunction<?> deleteDep(RouterHandler routerHandlers){
-        return RouterFunctions.route(RequestPredicates.DELETE("/router/Department"), routerHandlers::deleteDep);
-    }
-    @Bean
-    RouterFunction<?> getOneEmp(RouterHandler routerHandlers){
-        return RouterFunctions.route(RequestPredicates.GET("/router/Employee/{id}")
-                .and(accept(MediaType.APPLICATION_JSON)), routerHandlers::getDepById);
-    }
-    @Bean
-    RouterFunction<?> getAllEmp(RouterHandler routerHandlers){
-        return RouterFunctions.route(RequestPredicates.GET("/router/Department")
-                .and(accept(MediaType.APPLICATION_JSON)), routerHandlers::getAllDep);
-    }
-    @Bean
-    RouterFunction<?> creatEmp(RouterHandler routerHandlers){
-        return RouterFunctions.route(RequestPredicates.POST("/router/Employee")
-                .and(accept(MediaType.APPLICATION_JSON)).and(contentType(MediaType.APPLICATION_JSON)), serverRequest -> {
-            Mono<ServerResponse> emp = routerHandlers.createEmp(serverRequest,new Employee());
-            return emp;
-        });
-    }
-    @Bean
-    RouterFunction<?> deleteEmp(RouterHandler routerHandlers){
-        return RouterFunctions.route(RequestPredicates.DELETE("/router/Department/{id}")
-                .and(accept(MediaType.APPLICATION_JSON)), routerHandlers::deleteEmp);
+                .and(accept(MediaType.APPLICATION_JSON)), routerHandlers::getAllDep)
+                .andRoute(RequestPredicates.GET("/router/Department/{id}")
+                                .and(accept(MediaType.APPLICATION_JSON)),
+                        routerHandlers::getDepById)
+                .andRoute(RequestPredicates.DELETE("/router/Department"),
+                        routerHandlers::deleteDep)
+                .andRoute(RequestPredicates.POST("/router/Department")
+                        .and(accept(MediaType.APPLICATION_JSON)).and(contentType(MediaType.APPLICATION_JSON)), serverRequest -> {
+                    Mono<ServerResponse> dep = routerHandlers.createDep(serverRequest, new Department());
+                    return dep;
+                })
+                .andRoute(RequestPredicates.GET("/router/Employee")
+                        .and(accept(MediaType.APPLICATION_JSON)), routerHandlers::getAllEmp)
+                .andRoute(RequestPredicates.GET("/router/Employee/{id}")
+                        .and(accept(MediaType.APPLICATION_JSON)), routerHandlers::getEmpById)
+                .andRoute(RequestPredicates.DELETE("/router/Employee"), routerHandlers::deleteEmp)
+                .andRoute(RequestPredicates.POST("/router/Employee")
+                                .and(accept(MediaType.APPLICATION_JSON)).and(contentType(MediaType.APPLICATION_JSON)),
+                        serverRequest -> {
+                            Mono<ServerResponse> emp = routerHandlers.createEmp(serverRequest, new Employee());
+                            return emp;
+                        });
     }
 
 }

@@ -31,7 +31,7 @@ public class EmployeeController {
      * @return Flux<Employee>
      */
 
-    @GetMapping(value = "")
+    @GetMapping
     public Flux<Employee> all() {
         return this.employeeService.all();
     }
@@ -51,21 +51,22 @@ public class EmployeeController {
      * @return Mono<Employee>
      */
 
-    @PostMapping(value = "")
+    @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
     public Mono<Employee> createEmp(@RequestBody Employee employee) {
-
         return this.employeeService.createEmp(employee);
     }
 
 /**
-     * @param id
-     */
+ * @param id
+ * @return
+ */
 
     @DeleteMapping(value = "{id}")
     public Mono<Employee> delete(@PathVariable(value = "id") String id) {
-         return employeeService.delete(id);
+        return  employeeService.delete(id);
     }
+
 
 }
 

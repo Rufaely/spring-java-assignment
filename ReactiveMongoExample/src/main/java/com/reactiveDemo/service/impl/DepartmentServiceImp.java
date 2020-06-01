@@ -61,17 +61,17 @@ public class DepartmentServiceImp implements DepartmentService {
         return this.departmentRepo.save(newDep);
     }
 
+
     /**
      * @param id
+     * @return Mono<Department>
      */
     @Override
     public Mono<Department> delete(String id) {
         return departmentRepo.findById(id)
                 .flatMap(oldValue ->
                         departmentRepo.deleteById(id)
-                                .then(Mono.just(oldValue))
-                )
-                .single();
+                                .then(Mono.just(oldValue))).single();
 
     }
 
