@@ -57,7 +57,7 @@ public class EmployeeServiceImp implements EmployeeService {
      * @return Mono<Employee>
      */
     @Override
-    public Mono<Employee> delete(String id) {
+    public Mono<Employee> deleteEmp(String id) {
         return employeeRepo.findById(id)
                 .flatMap(oldValue ->
                         employeeRepo.deleteById(id)

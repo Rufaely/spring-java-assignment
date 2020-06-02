@@ -46,7 +46,8 @@ class EmployeeTest {
 
     @Test
     void setLastName() {
-        assertNotEquals(employee.getLastName(),"Kidanemariam");
+        employee.setLastName("Yohannes");
+        assertEquals(employee.getLastName(),"Yohannes");
     }
 
 }

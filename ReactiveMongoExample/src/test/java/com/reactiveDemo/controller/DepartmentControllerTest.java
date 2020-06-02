@@ -13,6 +13,7 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.boot.test.web.client.TestRestTemplate;
 import org.springframework.boot.web.server.LocalServerPort;
+import org.springframework.http.ResponseEntity;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 import org.springframework.test.context.junit4.SpringRunner;
 import reactor.core.publisher.Flux;
@@ -110,9 +111,9 @@ class DepartmentControllerTest {
     }
 
     @Test
-    void delete() {
-        when(departmentService.delete("1")).thenReturn(departmentMono);
-        Mono<Department> actualDep = departmentController.delete("1");
+    void deleteDep() {
+        when(departmentService.deleteDep("1")).thenReturn(departmentMono);
+        Mono<Department> actualDep = departmentController.deleteDep("1");
         assertThat(actualDep).isEqualTo(departmentMono);
     }
 }

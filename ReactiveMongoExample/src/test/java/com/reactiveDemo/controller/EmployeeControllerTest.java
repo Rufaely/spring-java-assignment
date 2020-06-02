@@ -1,6 +1,7 @@
 
 package com.reactiveDemo.controller;
 
+import com.reactiveDemo.model.Department;
 import com.reactiveDemo.model.Employee;
 import com.reactiveDemo.service.EmployeeService;
 import org.junit.jupiter.api.BeforeEach;
@@ -13,6 +14,7 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.boot.test.web.client.TestRestTemplate;
 import org.springframework.boot.web.server.LocalServerPort;
+import org.springframework.http.ResponseEntity;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 import org.springframework.test.context.junit4.SpringRunner;
 import reactor.core.publisher.Flux;
@@ -68,8 +70,8 @@ class EmployeeControllerTest {
     private TestRestTemplate restTemplate;
 
     @Test
-    public void testingEmpController() throws Exception {
-        assertThat(this.restTemplate.getForObject("http://localhost:" + port + "/Employee",
+    public void testingEmpController() {
+        assertThat(restTemplate.getForObject("http://localhost:" + port + "/Employee",
                 Employee.class));
     }
 
@@ -96,8 +98,8 @@ class EmployeeControllerTest {
     }
     @Test
     public void delete(){
-        when(employeeService.delete("1")).thenReturn(employeeMono);
-        Mono<Employee> actualEmp = employeeController.delete("1");
+        when(employeeService.deleteEmp("1")).thenReturn(employeeMono);
+        Mono<Employee> actualEmp = employeeController.deleteEmp("1");
         assertThat(actualEmp).isEqualTo(employeeMono);
     }
 

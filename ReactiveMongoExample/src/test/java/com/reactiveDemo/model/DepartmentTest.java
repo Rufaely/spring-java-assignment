@@ -41,7 +41,6 @@ class DepartmentTest {
     @Test
     void setName() {
         department.setName("Commerce");
-
         assertEquals(department.getName(),"Commerce");
     }
 }

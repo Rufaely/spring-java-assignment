@@ -70,10 +70,10 @@ class EmployeeServiceImpTest {
     }
 
     @Test
-    void delete() {
+    void deleteEmp() {
         Mono<Employee> deleted = this.employeeServiceImp
                 .createEmp(employee)
-                .flatMap(saved -> this.employeeServiceImp.delete(saved.getId()));
+                .flatMap(saved -> this.employeeServiceImp.deleteEmp(saved.getId()));
         StepVerifier
                 .create(deleted)
                 .expectNextMatches(dep -> dep.getFirstName().equalsIgnoreCase("Rufael"))

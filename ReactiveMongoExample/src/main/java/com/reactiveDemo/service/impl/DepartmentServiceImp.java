@@ -67,7 +67,7 @@ public class DepartmentServiceImp implements DepartmentService {
      * @return Mono<Department>
      */
     @Override
-    public Mono<Department> delete(String id) {
+    public Mono<Department> deleteDep(String id) {
         return departmentRepo.findById(id)
                 .flatMap(oldValue ->
                         departmentRepo.deleteById(id)

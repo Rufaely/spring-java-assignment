@@ -85,7 +85,7 @@ class DepartmentServiceImpTest {
     void delete() {
         Mono<Department> deleted = this.departmentServiceImp
                 .createDep(department)
-                .flatMap(saved -> this.departmentServiceImp.delete(saved.getId()));
+                .flatMap(saved -> this.departmentServiceImp.deleteDep(saved.getId()));
         StepVerifier
                 .create(deleted)
                 .expectNextMatches(dep -> dep.getName().equalsIgnoreCase("Finance"))

@@ -32,5 +32,5 @@ public interface DepartmentService {
      * @param id
      * @return Mono<Department>
      */
-    public Mono<Department> delete(String id);
+    public Mono<Department> deleteDep(String id);
 }
