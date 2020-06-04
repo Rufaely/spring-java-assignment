@@ -43,10 +43,10 @@ class DepartmentServiceImpTest {
     }
 
     @Test
-    void all() {
+    void testGetAllDepartments() {
         Flux<Department> departmentFlux = departmentRepo.saveAll(Flux.just(
                 department, department, department));
-        Flux<Department> departmentFlux1 = departmentServiceImp.all().thenMany(departmentFlux);
+        Flux<Department> departmentFlux1 = departmentServiceImp.getAllDepartments().thenMany(departmentFlux);
         Predicate<Department> predicate = dep -> departmentFlux.any(saveItem -> saveItem.equals(dep)).block();
         StepVerifier
                 .create(departmentFlux1)
@@ -57,11 +57,11 @@ class DepartmentServiceImpTest {
     }
 
     @Test
-    void get() {
+    void testGetDepartment() {
 
         Mono<Department> departmentMono = this.departmentServiceImp
-                .createDep(department)
-                .flatMap(saved -> this.departmentServiceImp.get(saved.getId()));
+                .createDepartment(department)
+                .flatMap(saved -> this.departmentServiceImp.getDepartment(saved.getId()));
         StepVerifier
                 .create(departmentMono)
                 .expectNextMatches(dep -> !dep.getId().equals(null))
@@ -73,8 +73,8 @@ class DepartmentServiceImpTest {
     }
 
     @Test
-    void createDep() {
-        Mono<Department> departmentMono = this.departmentServiceImp.createDep(department);
+    void testCreateDepartment() {
+        Mono<Department> departmentMono = this.departmentServiceImp.createDepartment(department);
         StepVerifier
                 .create(departmentMono)
                 .expectNextMatches(saved -> StringUtils.hasText(saved.getId()))
@@ -82,10 +82,10 @@ class DepartmentServiceImpTest {
     }
 
     @Test
-    void delete() {
+    void testDeleteDepartment() {
         Mono<Department> deleted = this.departmentServiceImp
-                .createDep(department)
-                .flatMap(saved -> this.departmentServiceImp.deleteDep(saved.getId()));
+                .createDepartment(department)
+                .flatMap(saved -> this.departmentServiceImp.deleteDepartment(saved.getId()));
         StepVerifier
                 .create(deleted)
                 .expectNextMatches(dep -> dep.getName().equalsIgnoreCase("Finance"))

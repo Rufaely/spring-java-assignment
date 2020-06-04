@@ -90,30 +90,38 @@ class DepartmentControllerTest {
     }
 
     @Test
-    void all() {
-        when(departmentService.all()).thenReturn(departmentFlux);
-        Flux<Department> actualDeps = departmentController.all();
+    void testGetAllDepartments() {
+        when(departmentService.getAllDepartments()).thenReturn(departmentFlux);
+        Flux<Department> actualDeps = departmentController.getAllDepartments();
         assertThat(actualDeps).isEqualTo(departmentFlux);
     }
 
     @Test
-    void get() {
-        when(departmentService.get("1")).thenReturn(departmentMono);
-        Mono<Department> actualDep = departmentController.get("1");
+    void testGetDepartment() {
+        when(departmentService.getDepartment("1")).thenReturn(departmentMono);
+        Mono<Department> actualDep = departmentController.getDepartment("1");
         assertThat(actualDep).isEqualTo(departmentMono);
     }
 
     @Test
-    void createDep() {
-        when(departmentService.createDep(departmentMono.block())).thenReturn(departmentMono);
-        Mono<Department> actualDep = departmentController.createDep(departmentMono.block());
+    void testCreateDepartment() {
+        when(departmentService.createDepartment(departmentMono.block())).thenReturn(departmentMono);
+        Mono<Department> actualDep = departmentController.createDepartment(departmentMono.block());
         assertThat(actualDep).isEqualTo(departmentMono);
     }
 
     @Test
-    void deleteDep() {
-        when(departmentService.deleteDep("1")).thenReturn(departmentMono);
-        Mono<Department> actualDep = departmentController.deleteDep("1");
+    void testDeleteDepartment() {
+        when(departmentService.deleteDepartment("1")).thenReturn(departmentMono);
+        Mono<Department> actualDep = departmentController.deleteDepartment("1");
         assertThat(actualDep).isEqualTo(departmentMono);
     }
+
+    /*@Test
+    void deleteAllDepartments() {
+        when(departmentService.deleteAllDepartments()).thenReturn(departmentFlux);
+        Flux<Department> actualDeps = departmentController.deleteAllDepartments();
+        assertThat(actualDeps).isEqualTo(departmentFlux);
+
+    }*/
 }

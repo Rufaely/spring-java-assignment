@@ -76,33 +76,40 @@ class EmployeeControllerTest {
     }
 
     @Test
-    public void get(){
-        when(employeeService.get("1")).thenReturn(employeeMono);
-        Mono<Employee> actualEmp = employeeController.get("1");
+    public void testGetEmployee(){
+        when(employeeService.getEmployee("1")).thenReturn(employeeMono);
+        Mono<Employee> actualEmp = employeeController.getEmployee("1");
         assertThat(actualEmp).isEqualTo(employeeMono);
 
     }
     @Test
-    public void all(){
-        when(employeeService.all()).thenReturn(employeeFlux);
-        Flux<Employee> actualEmps = employeeController.all();
+    public void testGetAllEmployees(){
+        when(employeeService.getAllEmployees()).thenReturn(employeeFlux);
+        Flux<Employee> actualEmps = employeeController.getAllEmployees();
         assertThat(actualEmps).isEqualTo(employeeFlux);
 
     }
 
     @Test
-    public void createEmp(){
-        when(employeeService.createEmp(employeeMono.block())).thenReturn(employeeMono);
-        Mono<Employee> actualEmp = employeeController.createEmp(employeeMono.block());
+    public void testCreateEmployee(){
+        when(employeeService.createEmployee(employeeMono.block())).thenReturn(employeeMono);
+        Mono<Employee> actualEmp = employeeController.createEmployee(employeeMono.block());
         assertThat(actualEmp).isEqualTo(employeeMono);
     }
     @Test
-    public void delete(){
-        when(employeeService.deleteEmp("1")).thenReturn(employeeMono);
-        Mono<Employee> actualEmp = employeeController.deleteEmp("1");
+    public void testDeleteEmployee(){
+        when(employeeService.deleteEmployee("1")).thenReturn(employeeMono);
+        Mono<Employee> actualEmp = employeeController.deleteEmployee("1");
         assertThat(actualEmp).isEqualTo(employeeMono);
     }
 
+  /*  @Test
+    void deleteAllEmployees() {
+        when(employeeService.deleteAllEmployees()).thenReturn(employeeFlux);
+        Flux<Employee> actualDeps = employeeController.deleteAllEmployees();
+        assertThat(actualDeps).isEqualTo(employeeFlux);
+
+    }*/
 }
 
 

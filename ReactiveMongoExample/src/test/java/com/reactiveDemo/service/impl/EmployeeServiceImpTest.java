@@ -12,6 +12,8 @@ import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 import reactor.test.StepVerifier;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.function.Predicate;
 
 @DataMongoTest
@@ -20,6 +22,7 @@ class EmployeeServiceImpTest {
     private final EmployeeServiceImp employeeServiceImp;
     private final EmployeeRepo employeeRepo;
     Employee employee = new Employee();
+    List<Employee> employees = new ArrayList<>();
 
     EmployeeServiceImpTest(@Autowired EmployeeServiceImp employeeServiceImp, @Autowired EmployeeRepo employeeRepo) {
         this.employeeServiceImp = employeeServiceImp;
@@ -33,10 +36,10 @@ class EmployeeServiceImpTest {
     }
 
     @Test
-    void all() {
+    void testGetAllEmployees() {
         Flux<Employee> employeeFlux = employeeRepo.saveAll(Flux.just(
                 employee, employee, employee));
-        Flux<Employee> employeeFlux1 = employeeServiceImp.all().thenMany(employeeFlux);
+        Flux<Employee> employeeFlux1 = employeeServiceImp.getAllEmployees().thenMany(employeeFlux);
         Predicate<Employee> predicate = emp -> employeeFlux.any(saveItem -> saveItem.equals(emp)).block();
         StepVerifier
                 .create(employeeFlux1)
@@ -47,10 +50,10 @@ class EmployeeServiceImpTest {
     }
 
     @Test
-    void get() {
+    void testGetEmployee() {
         Mono<Employee> employeeMono = this.employeeServiceImp
-                .createEmp(employee)
-                .flatMap(saved -> this.employeeServiceImp.get(saved.getId()));
+                .createEmployee(employee)
+                .flatMap(saved -> this.employeeServiceImp.getEmployee(saved.getId()));
         StepVerifier
                 .create(employeeMono)
                 .expectNextMatches(dep -> !dep.getId().equals(null))
@@ -61,8 +64,8 @@ class EmployeeServiceImpTest {
     }
 
     @Test
-    void createEmp() {
-        Mono<Employee> employeeMono = this.employeeServiceImp.createEmp(employee);
+    void testCreateEmployee() {
+        Mono<Employee> employeeMono = this.employeeServiceImp.createEmployee(employee);
         StepVerifier
                 .create(employeeMono)
                 .expectNextMatches(saved -> StringUtils.hasText(saved.getId()))
@@ -70,14 +73,15 @@ class EmployeeServiceImpTest {
     }
 
     @Test
-    void deleteEmp() {
+    void testDeleteEmployee() {
         Mono<Employee> deleted = this.employeeServiceImp
-                .createEmp(employee)
-                .flatMap(saved -> this.employeeServiceImp.deleteEmp(saved.getId()));
+                .createEmployee(employee)
+                .flatMap(saved -> this.employeeServiceImp.deleteEmployee(saved.getId()));
         StepVerifier
                 .create(deleted)
                 .expectNextMatches(dep -> dep.getFirstName().equalsIgnoreCase("Rufael"))
 //                .expectNextMatches(dep -> dep.getLastName().equalsIgnoreCase("Yohannes"))
                 .verifyComplete();
     }
+
 }

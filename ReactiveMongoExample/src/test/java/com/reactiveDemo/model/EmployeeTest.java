@@ -11,6 +11,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 class EmployeeTest {
 
     Employee employee = new Employee();
+
     @BeforeEach
     void setUp() {
         employee.setFirstName("Rufael");
@@ -18,36 +19,49 @@ class EmployeeTest {
     }
 
     @Test
-    void getId() {
+    void testEmpConstructorWithArg(){
+        Employee empConstructor = new Employee("1","rafi","kidun");
+        assertEquals("1",empConstructor.getId());
+        assertEquals("rafi",empConstructor.getFirstName());
+        assertEquals("kidun",empConstructor.getLastName());
+    }
+    @Test
+    void testEmpConstructorWithOutArg(){
+        Employee empConstructor = new Employee();
+        assertEquals(null,empConstructor.getId());
+        assertEquals(null,empConstructor.getFirstName());
+        assertEquals(null,empConstructor.getLastName());
+    }
+    @Test
+    void testGetId() {
         assertNull(employee.getId());
     }
 
     @Test
-    void getFirstName() {
-        assertEquals(employee.getFirstName(),"Rufael");
-    }
-
-    @Test
-    void getLastName() {
-        assertEquals(employee.getLastName(),"Yohannes");
-    }
-
-    @Test
-    void setId() {
+    void testSetId() {
         employee.setId("1");
         assertEquals(employee.getId(),"1");
     }
 
     @Test
-    void setFirstName() {
+    void testGetFirstName() {
+        assertEquals(employee.getFirstName(),"Rufael");
+    }
+
+    @Test
+    void testSetFirstName() {
         employee.setFirstName("Kidanemariam");
         assertEquals(employee.getFirstName(),"Kidanemariam");
     }
 
     @Test
-    void setLastName() {
-        employee.setLastName("Yohannes");
+    void testGetLastName() {
         assertEquals(employee.getLastName(),"Yohannes");
     }
 
+    @Test
+    void testSetLastName() {
+        employee.setLastName("Yohannes");
+        assertEquals(employee.getLastName(),"Yohannes");
+    }
 }
