@@ -14,7 +14,7 @@ import static org.springframework.web.reactive.function.server.RequestPredicates
 import static org.springframework.web.reactive.function.server.RouterFunctions.route;
 
 @Configuration
-public class RouterFunction {
+public class MyRouterFunction {
     @Bean
     org.springframework.web.reactive.function.server.RouterFunction<ServerResponse> routes(RouterHandler routerHandlers) {
 
