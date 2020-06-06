@@ -24,9 +24,9 @@ public class DepartmentRepoImpl implements DepartmentRepoInterface {
     private static long DEP_ID = 1L;
     @Autowired
     DepartmentRepo departmentRepo;
-   /* @Autowired
-    private ReactiveRedisTemplate<String, Department> template;
-    private ReactiveRedisOperations<String, Department> deptOps;*/
+    /* @Autowired
+     private ReactiveRedisTemplate<String, Department> template;
+     private ReactiveRedisOperations<String, Department> deptOps;*/
     @Autowired
     private ReactiveRedisConnectionFactory factory;
 
@@ -80,7 +80,7 @@ public class DepartmentRepoImpl implements DepartmentRepoInterface {
      */
     public Mono<Department> findById(Long id) {
 
-      return Mono.just(departmentRepo.findById(id).get());
+        return Mono.just(departmentRepo.findById(id).get());
 
     }
 
@@ -114,6 +114,6 @@ public class DepartmentRepoImpl implements DepartmentRepoInterface {
             logger.info("For Department "+ dep.getName()+" " +dep.getId() +"is on DB");
             System.out.println("For Department "+ dep.getName()+" " +dep.getId() +"is on DB");
         }
-       return Mono.just(departmentRepo.findById(department.getId()).get());
+        return Mono.just(departmentRepo.findById(department.getId()).get());
     }
 }

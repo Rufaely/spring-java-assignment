@@ -16,6 +16,7 @@ import java.util.List;
 //@Builder
 @NoArgsConstructor
 @AllArgsConstructor
+
 @RedisHash("department")
 public class Department implements Serializable {
 
