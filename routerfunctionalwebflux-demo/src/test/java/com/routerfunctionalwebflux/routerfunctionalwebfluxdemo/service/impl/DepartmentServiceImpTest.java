@@ -1,0 +1,111 @@
+package com.routerfunctionalwebflux.routerfunctionalwebfluxdemo.service.impl;
+
+import com.routerfunctionalwebflux.routerfunctionalwebfluxdemo.model.Department;
+import com.routerfunctionalwebflux.routerfunctionalwebfluxdemo.model.Employee;
+import com.routerfunctionalwebflux.routerfunctionalwebfluxdemo.repository.DepartmentRepo;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.autoconfigure.data.mongo.DataMongoTest;
+import org.springframework.context.annotation.Import;
+import org.springframework.util.StringUtils;
+import reactor.core.publisher.Flux;
+import reactor.core.publisher.Mono;
+import reactor.test.StepVerifier;
+
+import java.util.ArrayList;
+import java.util.List;
+import java.util.function.Predicate;
+
+import static org.assertj.core.api.Assertions.assertThat;
+import static org.junit.jupiter.api.Assertions.*;
+@DataMongoTest
+@Import(DepartmentServiceImp.class)
+class DepartmentServiceImpTest {
+
+    private final DepartmentServiceImp departmentServiceImp;
+    private final DepartmentRepo departmentRepo;
+
+    Employee employee = new Employee();
+    Department department = new Department();
+    List<Employee> employees = new ArrayList<>();
+
+    DepartmentServiceImpTest(@Autowired DepartmentServiceImp departmentServiceImp, @Autowired DepartmentRepo departmentRepo) {
+        this.departmentServiceImp = departmentServiceImp;
+        this.departmentRepo = departmentRepo;
+    }
+    @Test
+    public void contexLoads() throws Exception {
+        assertThat(departmentServiceImp).isNotNull();
+    }
+    @BeforeEach
+    void setUp() {
+        employee.setFirstName("Rufael");
+        employee.setLastName("kidanemariam");
+        employees.add(employee);
+        department.setEmployees(employees);
+        department.setName("Finance");
+    }
+
+    @Test
+    void testGetAllDepartments() {
+        Flux<Department> departmentFlux = departmentRepo.saveAll(Flux.just(
+                department, department, department));
+        Flux<Department> departmentFlux1 = departmentServiceImp.getAllDepartments().thenMany(departmentFlux);
+        Predicate<Department> predicate = dep -> departmentFlux.any(saveItem -> saveItem.equals(dep)).block();
+        StepVerifier
+                .create(departmentFlux1)
+                .expectNextMatches(predicate)
+                .expectNextMatches(predicate)
+                .expectNextMatches(predicate)
+                .verifyComplete();
+    }
+
+    @Test
+    void testGetDepartment() {
+
+        Mono<Department> departmentMono = this.departmentServiceImp
+                .createDepartment(department)
+                .flatMap(saved -> this.departmentServiceImp.getDepartment(saved.getId()));
+        StepVerifier
+                .create(departmentMono)
+                .expectNextMatches(dep -> !dep.getId().equals(null))
+//                .expectNextMatches(dep-> dep.getName().equals("Finance"))
+//                .expectNextMatches(dep->dep.getEmployees().get(0).getFirstName().equals("Rufael"))
+//                .expectNextMatches(dep->dep.getEmployees().get(0).getLastName().equals("kidanemariam"))
+
+                .verifyComplete();
+    }
+
+    @Test
+    void testCreateDepartment() {
+        Mono<Department> departmentMono = this.departmentServiceImp.createDepartment(department);
+        StepVerifier
+                .create(departmentMono)
+                .expectNextMatches(saved -> StringUtils.hasText(saved.getId()))
+                .verifyComplete();
+    }
+
+    @Test
+    void testDeleteDepartment() {
+        Mono<Department> deleted = this.departmentServiceImp
+                .createDepartment(department)
+                .flatMap(saved -> this.departmentServiceImp.deleteDepartment(saved.getId()));
+        StepVerifier
+                .create(deleted)
+                .expectNextMatches(dep -> dep.getName().equalsIgnoreCase("Finance"))
+                .verifyComplete();
+    }
+
+    /*@Test
+    void testDeleteAllDepartments() {
+        Mono<Department> departmentMono = this.departmentServiceImp.createDepartment(department);
+        Department dept = departmentMono.block();
+        Flux<Department> deleted = this.departmentServiceImp.deleteAllDepartments();
+        StepVerifier
+                .create(deleted)
+                .expectNextMatches(dep -> dep.getName().equalsIgnoreCase("Rufael"))
+//                .expectNextMatches(dep -> dep.getLastName().equalsIgnoreCase("Yohannes"))
+                .verifyComplete();
+    }*/
+}
